@@ -1,0 +1,34 @@
+#import data
+import pandas as pd 
+Consumer_Complaints_Data = pd.read_excel(r"F:\Data Analysis\Portofolio\Bank Consumer Complaints\consumer_complaints.xlsx")
+Consumer_Complaints_Data
+
+
+
+#Cleaning data
+
+#check duplicated values
+Consumer_Complaints_Data[Consumer_Complaints_Data.duplicated(subset=['product','issue','complaint_id'],keep=False)]
+
+
+
+#check null values 
+Consumer_Complaints_Data[['product','issue','company','state']].isnull().sum()
+
+
+#data wrangling
+Consumer_Complaints_Data['issue_1'] = Consumer_Complaints_Data['issue'].str.split(',').str[0]
+Consumer_Complaints_Data["isuue_2"] = Consumer_Complaints_Data["issue"].str.split(',').str[1]
+Consumer_Complaints_Data['issue_3'] = Consumer_Complaints_Data['issue'].str.split(',').str[2]
+Consumer_Complaints_Data
+
+
+#data analysis
+Consumer_Complaints_Data['Complaints_delivered_time'] = (Consumer_Complaints_Data['date_sent_to_company'] - Consumer_Complaints_Data['date_received']).dt.days
+
+#Add id column
+Consumer_Complaints_Data['id'] = range(1, len(Consumer_Complaints_Data) + 1)
+
+
+Consumer_Complaints_Data.to_excel('final analysis.xlsx',index=False)
+Consumer_Complaints_Data
